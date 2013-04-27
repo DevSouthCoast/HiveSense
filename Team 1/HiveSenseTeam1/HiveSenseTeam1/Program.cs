@@ -21,8 +21,10 @@ namespace HiveSenseTeam1
     public partial class Program
     {
         const string MEASUREMENT_FILE_NAME = "measurements.json";
+        const string ALERTS_FILE_NAME = "alerts.json";
 
         private DateTime gpsFixTimeUTC;
+        private GT.Timer loggingTimer_;
 
         // This method is run when the mainboard is powered up or reset.   
         void ProgramStarted()
@@ -51,6 +53,15 @@ namespace HiveSenseTeam1
             accelerometer.ThresholdExceeded += new Accelerometer.ThresholdExceededEventHandler(accelerometer_ThresholdExceeded);
 
             StartCheckingLightLevels();
+
+            loggingTimer_ = new GT.Timer(60000);
+            loggingTimer_.Stop();
+            loggingTimer_.Tick += new GT.Timer.TickEventHandler(loggingTimer_Tick);
+        }
+
+        void loggingTimer_Tick(GT.Timer timer)
+        {
+            temperatureHumidity.RequestMeasurement();
         }
 
         private void StartCheckingLightLevels()
@@ -75,6 +86,7 @@ namespace HiveSenseTeam1
 
         void gps_PositionReceived(GPS sender, GPS.Position position)
         {
+            loggingTimer_.Start();
             gpsFixTimeUTC = gps.LastPosition.FixTimeUtc;
             temperatureHumidity.RequestMeasurement();
         }
