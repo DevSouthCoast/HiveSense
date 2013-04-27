@@ -5,15 +5,13 @@ namespace HiveSenseTeam1.Model
 {
     public class Measurement
     {
-        public long Id { get; set; }
-        public long TimeOffset { get; set; }
+        public DateTime TimeStamp { get; set; }
         public string Key { get; set; }
         public double Value { get; set; }
         public string ToJSon()
         {
             return "{"
-                + "\"Id\": " + Id.ToString() + ", "
-                + "\"TimeOffset\": " + TimeOffset.ToString() + ", "
+                + "\"TimeStamp\": " + TimeStamp.ToLocalTime().ToString("yyyy-MM-dd hh:mm:ss") + ", "
                 + "\"Key\": \"" + Key + "\", "
                 + "\"Value\": " + Value.ToString()
                 + "}";

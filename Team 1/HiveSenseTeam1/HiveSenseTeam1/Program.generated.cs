@@ -19,6 +19,8 @@ namespace HiveSenseTeam1
         Gadgeteer.Modules.Seeed.TemperatureHumidity temperatureHumidity;
         Gadgeteer.Modules.GHIElectronics.SDCard sdCard;
         Gadgeteer.Modules.GHIElectronics.UsbClientDP usbClientDP;
+        Gadgeteer.Modules.Seeed.GPS gps;
+        Gadgeteer.Modules.GHIElectronics.Display_HD44780 char_Display;
 
         public static void Main()
         {
@@ -37,6 +39,10 @@ namespace HiveSenseTeam1
             usbClientDP = new GTM.GHIElectronics.UsbClientDP(1);
 		
             sdCard = new GTM.GHIElectronics.SDCard(5);
+		
+            gps = new GTM.Seeed.GPS(11);
+		
+            char_Display = new GTM.GHIElectronics.Display_HD44780(12);
 		
             temperatureHumidity = new GTM.Seeed.TemperatureHumidity(14);
 
