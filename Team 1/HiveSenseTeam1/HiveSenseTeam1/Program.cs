@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections;
+using System.IO;
 using System.Threading;
 using Microsoft.SPOT;
 using Microsoft.SPOT.Presentation;
@@ -19,7 +20,9 @@ namespace HiveSenseTeam1
 {
     public partial class Program
     {
-        private DateTime GPSFixTimeUTC;
+        const string MEASUREMENT_FILE_NAME = "measurements.json";
+
+        private DateTime gpsFixTimeUTC;
 
         // This method is run when the mainboard is powered up or reset.   
         void ProgramStarted()
@@ -41,20 +44,42 @@ namespace HiveSenseTeam1
             // Use Debug.Print to show messages in Visual Studio's "Output" window during debugging.
             Debug.Print("Program Started");
             gps.PositionReceived += new GPS.PositionReceivedHandler(gps_PositionReceived);
-            
+
             temperatureHumidity.MeasurementComplete += new TemperatureHumidity.MeasurementCompleteEventHandler(temperatureHumidity_MeasurementComplete);
         }
 
         void gps_PositionReceived(GPS sender, GPS.Position position)
         {
-            GPSFixTimeUTC = gps.LastPosition.FixTimeUtc;
+            gpsFixTimeUTC = gps.LastPosition.FixTimeUtc;
             temperatureHumidity.RequestMeasurement();
         }
 
         void temperatureHumidity_MeasurementComplete(TemperatureHumidity sender, double temperature, double relativeHumidity)
         {
-            var measurement = new Measurement { TimeStamp = GPSFixTimeUTC, Key = "TempDegC", Value = temperature };
-            char_Display.PrintString(measurement.TimeStamp.ToLocalTime().ToString());
+            var measurementTemp = new Measurement { TimeStamp = gpsFixTimeUTC, Key = "TempDegC", Value = temperature };
+            var measurementHumidity = new Measurement { TimeStamp = gpsFixTimeUTC, Key = "HumidityPc", Value = relativeHumidity };
+
+            if (sdCard.IsCardInserted)
+            {
+                var storageDevice = sdCard.GetStorageDevice();
+                using (FileStream fs =
+                    storageDevice.Open(
+                        MEASUREMENT_FILE_NAME,
+                        FileMode.OpenOrCreate,
+                        FileAccess.ReadWrite))
+                {
+                    WriteString(measurementTemp, fs);
+                    WriteString(measurementHumidity, fs);
+                }
+            }
+
+        }
+
+        private static void WriteString(Measurement measurementTemp, FileStream fs)
+        {
+            fs.Seek(0, SeekOrigin.End);
+            byte[] bytes = System.Text.Encoding.UTF8.GetBytes(measurementTemp.ToJSon());
+            fs.Write(bytes, 0, bytes.Length);
         }
     }
 }
