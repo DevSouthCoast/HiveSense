@@ -46,6 +46,13 @@ namespace HiveSenseTeam1
             gps.PositionReceived += new GPS.PositionReceivedHandler(gps_PositionReceived);
 
             temperatureHumidity.MeasurementComplete += new TemperatureHumidity.MeasurementCompleteEventHandler(temperatureHumidity_MeasurementComplete);
+            accelerometer.EnableThresholdDetection(4, true, true, true, true, false, true);
+            accelerometer.ThresholdExceeded += new Accelerometer.ThresholdExceededEventHandler(accelerometer_ThresholdExceeded);
+        }
+
+        void accelerometer_ThresholdExceeded(Accelerometer sender)
+        {
+            multicolorLed.BlinkOnce(GT.Color.Red);
         }
 
         void gps_PositionReceived(GPS sender, GPS.Position position)

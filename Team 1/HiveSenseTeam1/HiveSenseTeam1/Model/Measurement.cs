@@ -14,7 +14,7 @@ namespace HiveSenseTeam1.Model
                 + "\"TimeStamp\": " + TimeStamp.ToLocalTime().ToString("yyyy-MM-dd hh:mm:ss") + ", "
                 + "\"Key\": \"" + Key + "\", "
                 + "\"Value\": " + Value.ToString()
-                + "}";
+                + "}\n";
         }
     }
 }
