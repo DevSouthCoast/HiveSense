@@ -46,8 +46,26 @@ namespace HiveSenseTeam1
             gps.PositionReceived += new GPS.PositionReceivedHandler(gps_PositionReceived);
 
             temperatureHumidity.MeasurementComplete += new TemperatureHumidity.MeasurementCompleteEventHandler(temperatureHumidity_MeasurementComplete);
+            
             accelerometer.EnableThresholdDetection(4, true, true, true, true, false, true);
             accelerometer.ThresholdExceeded += new Accelerometer.ThresholdExceededEventHandler(accelerometer_ThresholdExceeded);
+
+            StartCheckingLightLevels();
+        }
+
+        private void StartCheckingLightLevels()
+        {
+            GT.Timer timer = new GT.Timer(1000); // every second (1000ms)
+            timer.Tick += new GT.Timer.TickEventHandler(timer_Tick);
+            timer.Start();
+        }
+
+        void timer_Tick(GT.Timer timer)
+        {
+            if (lightSensor.ReadLightSensorPercentage() > 60)
+            {
+                multicolorLed.BlinkOnce(GT.Color.Green);   
+            }
         }
 
         void accelerometer_ThresholdExceeded(Accelerometer sender)

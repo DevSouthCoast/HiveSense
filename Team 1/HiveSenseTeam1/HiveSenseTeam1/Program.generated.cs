@@ -23,6 +23,7 @@ namespace HiveSenseTeam1
         Gadgeteer.Modules.GHIElectronics.Display_HD44780 char_Display;
         Gadgeteer.Modules.GHIElectronics.MulticolorLed multicolorLed;
         Gadgeteer.Modules.Seeed.Accelerometer accelerometer;
+        Gadgeteer.Modules.GHIElectronics.LightSensor lightSensor;
 
         public static void Main()
         {
@@ -43,6 +44,8 @@ namespace HiveSenseTeam1
             accelerometer = new GTM.Seeed.Accelerometer(3);
 		
             sdCard = new GTM.GHIElectronics.SDCard(5);
+		
+            lightSensor = new GTM.GHIElectronics.LightSensor(9);
 		
             multicolorLed = new GTM.GHIElectronics.MulticolorLed(10);
 		
