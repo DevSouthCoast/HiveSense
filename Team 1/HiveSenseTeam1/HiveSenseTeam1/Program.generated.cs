@@ -16,6 +16,9 @@ namespace HiveSenseTeam1
     public partial class Program : Gadgeteer.Program
     {
         // GTM.Module definitions
+        Gadgeteer.Modules.Seeed.TemperatureHumidity temperatureHumidity;
+        Gadgeteer.Modules.GHIElectronics.SDCard sdCard;
+        Gadgeteer.Modules.GHIElectronics.UsbClientDP usbClientDP;
 
         public static void Main()
         {
@@ -30,7 +33,13 @@ namespace HiveSenseTeam1
 
         private void InitializeModules()
         {   
-            // Initialize GTM.Modules and event handlers here.
+            // Initialize GTM.Modules and event handlers here.		
+            usbClientDP = new GTM.GHIElectronics.UsbClientDP(1);
+		
+            sdCard = new GTM.GHIElectronics.SDCard(5);
+		
+            temperatureHumidity = new GTM.Seeed.TemperatureHumidity(14);
+
         }
     }
 }

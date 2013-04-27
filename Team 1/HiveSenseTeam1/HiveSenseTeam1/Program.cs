@@ -10,6 +10,10 @@ using Microsoft.SPOT.Touch;
 using Gadgeteer.Networking;
 using GT = Gadgeteer;
 using GTM = Gadgeteer.Modules;
+using Gadgeteer.Modules.Seeed;
+using Gadgeteer.Modules.GHIElectronics;
+using HiveSenseTeam1.Model;
+using GHIElectronics.Gadgeteer;
 
 namespace HiveSenseTeam1
 {
@@ -34,6 +38,14 @@ namespace HiveSenseTeam1
 
             // Use Debug.Print to show messages in Visual Studio's "Output" window during debugging.
             Debug.Print("Program Started");
+            temperatureHumidity.MeasurementComplete += new TemperatureHumidity.MeasurementCompleteEventHandler(temperatureHumidity_MeasurementComplete);
+            temperatureHumidity.RequestMeasurement();
+        }
+
+        void temperatureHumidity_MeasurementComplete(TemperatureHumidity sender, double temperature, double relativeHumidity)
+        {
+            var measurement = new Measurement { Id = 1, TimeOffset = DateTime.Now.Ticks, Key = "TempDegC", Value = temperature };
+            Debug.Print(measurement.ToJSon());
         }
     }
 }
