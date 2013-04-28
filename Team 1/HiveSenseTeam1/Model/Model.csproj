@@ -30,6 +30,7 @@
   </PropertyGroup>
   <Import Project="$(NetMfTargetsBaseDir)$(TargetFrameworkVersion)\CSharp.Targets" />
   <ItemGroup>
+    <Compile Include="Model\Alerts.cs" />
     <Compile Include="Model\Configuration.cs" />
     <Compile Include="Model\Measurement.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
