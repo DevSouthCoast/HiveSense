@@ -62,8 +62,10 @@ namespace HiveSenseTeam1
 
         void temperatureHumidity_MeasurementComplete(TemperatureHumidity sender, double temperature, double relativeHumidity)
         {
-            var measurementTemp = new Measurement { TimeStamp = gpsFixTimeUTC, Key = "TempDegC", Value = temperature };
-            var measurementHumidity = new Measurement { TimeStamp = gpsFixTimeUTC, Key = "HumidityPc", Value = relativeHumidity };
+            
+
+            var measurementTemp = new Measurement { TimeStamp = gpsFixTimeUTC, Key = MeasureType.Tempdegc, Value = temperature };
+            var measurementHumidity = new Measurement { TimeStamp = gpsFixTimeUTC, Key = MeasureType.Humidity, Value = relativeHumidity };
 
             if (MeasurementReady != null)
                 {
@@ -95,9 +97,9 @@ namespace HiveSenseTeam1
                 if (AlarmReady != null)
                 {
                     AlarmReady(
-                        new HiveSenseTeam1.Model.Alert
+                        new Alert
                         {
-                            Key = "LightSense",
+                            Key = MeasureType.Light,
                             Message = "Too much light in the hive!",
                             RecordedValue = lightLevel,
                             Threshold = 4.0,
