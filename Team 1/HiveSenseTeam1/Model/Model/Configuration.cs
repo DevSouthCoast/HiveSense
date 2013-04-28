@@ -8,6 +8,9 @@ namespace HiveSenseTeam1.Model
 {
     public class Configuration
     {
+        public const string MotionSensorAlertsSetting = "MotionSensorAlerts";
+        public const string TemperatureThresholdExceededAlertsSetting = "TemperatureThresholdExceededAlerts";
+
         char[] newLine = new[] { '\r', '\n' };
 
         public Configuration(string configValues)
@@ -58,7 +61,8 @@ namespace HiveSenseTeam1.Model
                         return (int)kvp.Value;
                     }
                 }
-                return -1;
+                //Default to "on"
+                return 1;
             }
         }
     }

@@ -9,43 +9,48 @@ namespace MFConsoleApplication1
     {
         public static void Main()
         {
-            ConstructConfigurationExpectNotNull();
             InitialiseConfigWithSingleEntryExpectArrayListWithSingleKVP();
             InitialiseConfigWith2EntriesExpectArrayListWith2KVPs();
-            GetValue();
+            GetValueWithMissingKeyValuesExpectDefaultValue();
+            Debug.Print("All done");
         }
 
-        private static void GetValue()
+        private static void GetValueWithExistingKeyExpectValues()
+        {
+            var config = BuildStandardConfig();
+            ThrowIfNot(config["MotionSensorAlerts"] == 1, "GetValueWithExistingKeyExpectValues");
+            ThrowIfNot(config["TemperatureThresholdAlerts"] == 1, "GetValueWithExistingKeyExpectValues");
+        }
+
+        private static Configuration BuildStandardConfig()
         {
             var config = new Configuration("MotionSensorAlerts=1" + '\r' + '\n' + "TemperatureThresholdExceededAlerts=0");
-            ThrowIfNot(config["MotionSensorAlerts"] == 1);
-            ThrowIfNot(config["TemperatureThresholdAlerts"] == 1);
+            return config;
         }
 
-
+        private static void GetValueWithMissingKeyValuesExpectDefaultValue()
+        {
+            var config = BuildStandardConfig();
+            ThrowIfNot(config["MissingSetting"] == 1, "GetValueWithMissingKeyValuesExpectDefaultValue");
+        }
 
         private static void InitialiseConfigWith2EntriesExpectArrayListWith2KVPs()
         {
-            var config = new Configuration("MotionSensorAlerts=1" + '\r' + '\n' + "TemperatureThresholdExceededAlerts=0");
-            ThrowIfNot(config.Values.Count == 2);
+            var config = BuildStandardConfig();
+            ThrowIfNot(config.Values.Count == 2,"InitialiseConfigWith2EntriesExpectArrayListWith2KVPs");
         }
 
         private static void InitialiseConfigWithSingleEntryExpectArrayListWithSingleKVP()
         {
             var config = new Configuration("MotionSensorAlerts=1");
-            ThrowIfNot(config.Values.Count == 1);
+            ThrowIfNot(config.Values.Count == 1, "InitialiseConfigWithSingleEntryExpectArrayListWithSingleKVP");
         }
 
-        private static void ConstructConfigurationExpectNotNull()
-        {
-            ThrowIfNot(new Configuration() != null);
-        }
-
-        private static void ThrowIfNot(bool test)
+        private static void ThrowIfNot(bool test, string message)
         {
             if (!test)
             {
-                throw new InvalidOperationException();
+                throw new InvalidOperationException(message);
             }
         }
     }
