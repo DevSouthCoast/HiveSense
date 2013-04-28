@@ -48,18 +48,6 @@ namespace HiveSenseTeam1
             accelerometer.ThresholdExceeded += new Accelerometer.ThresholdExceededEventHandler(accelerometer_ThresholdExceeded);
 
             StartCheckingLightLevels();
-
-<<<<<<< HEAD
-=======
-            loggingTimer_ = new GT.Timer(60000);
-            loggingTimer_.Stop();
-            loggingTimer_.Tick += new GT.Timer.TickEventHandler(loggingTimer_Tick);
-
-            if (config[Configuration.LogIfNoGPSFix] == 1)
-            {
-                loggingTimer_.Start();
-            }
->>>>>>> Add LogIfNoGPSFix config check to runtime
         }
 
         private Configuration InitialiseConfiguration()
