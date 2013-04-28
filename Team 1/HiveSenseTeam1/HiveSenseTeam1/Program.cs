@@ -39,9 +39,10 @@ namespace HiveSenseTeam1
 
             monitor_ = new HiveMonitor(config);
 
-            var sdLogger = new SdLogger();
+            var sdLogger = new SdLogger(sdCard);
             monitor_.MeasurementReady += new HiveMonitor.MeasurementReadyHandler(sdLogger.OnLogItem);
-            
+            monitor_.TestEvents();
+
             //monitor_.MeasurementReady += liveMonitor.OnLogItem;
             //monitor_.MeasurementReady += webLogger.OnLogItem;
 
@@ -117,28 +118,6 @@ namespace HiveSenseTeam1
         {
             var measurementTemp = new Measurement { TimeStamp = gpsFixTimeUTC, Key = "TempDegC", Value = temperature };
             var measurementHumidity = new Measurement { TimeStamp = gpsFixTimeUTC, Key = "HumidityPc", Value = relativeHumidity };
-
-            if (sdCard.IsCardInserted)
-            {
-                var storageDevice = sdCard.GetStorageDevice();
-                using (FileStream fs =
-                    storageDevice.Open(
-                        MEASUREMENT_FILE_NAME,
-                        FileMode.OpenOrCreate,
-                        FileAccess.ReadWrite))
-                {
-                    WriteString(measurementTemp, fs);
-                    WriteString(measurementHumidity, fs);
-                }
-            }
-
-        }
-
-        private static void WriteString(Measurement measurementTemp, FileStream fs)
-        {
-            fs.Seek(0, SeekOrigin.End);
-            byte[] bytes = System.Text.Encoding.UTF8.GetBytes(measurementTemp.ToJSon());
-            fs.Write(bytes, 0, bytes.Length);
         }
     }
 }
