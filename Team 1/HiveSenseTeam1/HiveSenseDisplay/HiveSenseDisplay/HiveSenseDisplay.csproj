@@ -120,6 +120,6 @@
     <None Include="Resources\SadBee.jpg" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="Resources\UncdertainBee.jpg" />
+    <None Include="Resources\UncertainBee.jpg" />
   </ItemGroup>
 </Project>
