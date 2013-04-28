@@ -3,6 +3,7 @@ using Gadgeteer.Modules.Seeed;
 using Microsoft.SPOT;
 using HiveSenseTeam1.Model;
 using GT = Gadgeteer;
+using Gadgeteer.Modules.GHIElectronics;
 
 namespace HiveSenseTeam1
 {
@@ -14,15 +15,21 @@ namespace HiveSenseTeam1
         public event MeasurementReadyHandler MeasurementReady;
         public event AlarmReadyHandler AlarmReady;
         private GT.Timer loggingTimer_;
-        private TemperatureHumidity temperatureHumidity;
-        private GPS gps;
+        private TemperatureHumidity temperatureHumidity_;
+        private GPS gps_;
         private DateTime gpsFixTimeUTC;
+        private LightSensor lightSensor_;
 
-        public HiveMonitor(Configuration config, TemperatureHumidity temperatureHumidity, GPS gps)
+        public HiveMonitor(
+            Configuration config,
+            TemperatureHumidity temperatureHumidity,
+            GPS gps,
+            LightSensor lightSensor)
         {
             config_ = config;
-            this.temperatureHumidity = temperatureHumidity;
-            this.gps = gps;
+            temperatureHumidity_ = temperatureHumidity;
+            gps_ = gps;
+            lightSensor_ = lightSensor;
 
             loggingTimer_ = new GT.Timer(5000);
             loggingTimer_.Stop();
@@ -37,11 +44,13 @@ namespace HiveSenseTeam1
             temperatureHumidity.MeasurementComplete += new TemperatureHumidity.MeasurementCompleteEventHandler(temperatureHumidity_MeasurementComplete);
 
             gps.PositionReceived += new GPS.PositionReceivedHandler(gps_PositionReceived);
+
+            StartCheckingLightLevels();
         }
 
         void loggingTimer_Tick(GT.Timer timer)
         {
-            temperatureHumidity.RequestMeasurement();
+            temperatureHumidity_.RequestMeasurement();
         }
 
         void temperatureHumidity_MeasurementComplete(TemperatureHumidity sender, double temperature, double relativeHumidity)
@@ -60,19 +69,36 @@ namespace HiveSenseTeam1
         {
             Debug.Print("Starting logging timer...");
             loggingTimer_.Start();
-            gpsFixTimeUTC = gps.LastPosition.FixTimeUtc;
+            gpsFixTimeUTC = gps_.LastPosition.FixTimeUtc;
         }
 
-        public void TestEvents()
+        private void StartCheckingLightLevels()
         {
-            if (MeasurementReady != null)
+            GT.Timer timer = new GT.Timer(1000); // every second (1000ms)
+            timer.Tick += new GT.Timer.TickEventHandler(TimerCheckLightLevelsTick);
+            timer.Start();
+        }
+
+        void TimerCheckLightLevelsTick(GT.Timer timer)
+        {
+            double lightLevel = lightSensor_.ReadLightSensorPercentage();
+            // TODO: Replace this with config.
+            if (lightLevel > 60)
             {
-                MeasurementReady(new Measurement { Key = "TempDegC", TimeStamp = System.DateTime.UtcNow, Value = 0.0 });
-            }
-            if (AlarmReady != null)
-            {
-                AlarmReady(new Alert { Key = "Shaken", Message = "It's wobbling", RecordedValue = 3, Threshold = 2, TimeStamp = System.DateTime.UtcNow });
+                if (AlarmReady != null)
+                {
+                    AlarmReady(
+                        new HiveSenseTeam1.Model.Alert
+                        {
+                            Key = "LightSense",
+                            Message = "Too much light in the hive!",
+                            RecordedValue = lightLevel,
+                            Threshold = 60.0,
+                            TimeStamp = gpsFixTimeUTC
+                        });
+                }
             }
         }
+
     }
 }

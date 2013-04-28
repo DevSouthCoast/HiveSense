@@ -12,7 +12,7 @@ using Gadgeteer.Networking;
 using GT = Gadgeteer;
 using GTM = Gadgeteer.Modules;
 using Gadgeteer.Modules.GHIElectronics;
-using Gadgeteer.Modules.LoveElectronics;
+using Gadgeteer.Modules.IngenuityMicro;
 
 namespace HiveSenseDisplay
 {
@@ -58,8 +58,8 @@ namespace HiveSenseDisplay
             SetupUI();
 
             RfPipe.DataReceived += new GTM.IngenuityMicro.RfPipe.RfPipeReceivedHandler(RfPipe_DataReceived);
-            HappyButton.ButtonPressed += new GTM.LoveElectronics.Button.ButtonEventHandler(HappyButton_ButtonPressed);
-            Mehbutton.ButtonPressed += new GTM.LoveElectronics.Button.ButtonEventHandler(Mehbutton_ButtonPressed);
+            //HappyButton.ButtonPressed += new GTM.LoveElectronics.Button.ButtonEventHandler(HappyButton_ButtonPressed);
+            //Mehbutton.ButtonPressed += new GTM.LoveElectronics.Button.ButtonEventHandler(Mehbutton_ButtonPressed);
             SadButton.ButtonPressed += new GTM.GHIElectronics.Button.ButtonEventHandler(SadButton_ButtonPressed);
         }
 
@@ -81,19 +81,19 @@ namespace HiveSenseDisplay
             Facepic.Invalidate();
         }
 
-        void Mehbutton_ButtonPressed(GTM.LoveElectronics.Button sender, GTM.LoveElectronics.Button.ButtonState state)
-        {
-            var BeeFace = Resources.GetBitmap(Resources.BitmapResources.UncdertainBee);
-            Facepic.Background = new ImageBrush(BeeFace);
-            Facepic.Invalidate();
-        }
+        //void Mehbutton_ButtonPressed(GTM.LoveElectronics.Button sender, GTM.LoveElectronics.Button.ButtonState state)
+        //{
+        //    var BeeFace = Resources.GetBitmap(Resources.BitmapResources.UncdertainBee);
+        //    Facepic.Background = new ImageBrush(BeeFace);
+        //    Facepic.Invalidate();
+        //}
 
-        void HappyButton_ButtonPressed(GTM.LoveElectronics.Button sender, GTM.LoveElectronics.Button.ButtonState state)
-        {
-            var BeeFace = Resources.GetBitmap(Resources.BitmapResources.HappyBee);
-            Facepic.Background = new ImageBrush(BeeFace);
-            Facepic.Invalidate();
-        }
+        //void HappyButton_ButtonPressed(GTM.LoveElectronics.Button sender, GTM.LoveElectronics.Button.ButtonState state)
+        //{
+        //    var BeeFace = Resources.GetBitmap(Resources.BitmapResources.HappyBee);
+        //    Facepic.Background = new ImageBrush(BeeFace);
+        //    Facepic.Invalidate();
+        //}
 
         void timer_Tick(GT.Timer timer)
         {

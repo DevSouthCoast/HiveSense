@@ -29,17 +29,19 @@ namespace HiveSenseTeam1
         private SdLogger sdLogger_;
         private DisplayLogger dispLogger_;
         private RfLogger rfLogger_;
+        private LightAlarm lightAlarm_;
 
         // This method is run when the mainboard is powered up or reset.   
         void ProgramStarted()
         {
             Configuration config = InitialiseConfiguration();
 
-            monitor_ = new HiveMonitor(config, temperatureHumidity, gps);
+            monitor_ = new HiveMonitor(config, temperatureHumidity, gps, lightSensor);
 
             sdLogger_ = new SdLogger(sdCard);
             dispLogger_ = new DisplayLogger(char_Display);
             rfLogger_ = new RfLogger(rfPipe);
+            lightAlarm_ = new LightAlarm(multicolorLed);
 
             monitor_.MeasurementReady += new HiveMonitor.MeasurementReadyHandler(sdLogger_.OnLogItem);
             monitor_.MeasurementReady += new HiveMonitor.MeasurementReadyHandler(dispLogger_.OnLogItem);
@@ -48,11 +50,11 @@ namespace HiveSenseTeam1
             monitor_.AlarmReady += new HiveMonitor.AlarmReadyHandler(sdLogger_.OnLogItem);
 
 
+            monitor_.AlarmReady += new HiveMonitor.AlarmReadyHandler(lightAlarm_.OnLogItem);
+
             //monitor_.TestEvents();
             accelerometer.EnableThresholdDetection(4, true, true, true, true, false, true);
             accelerometer.ThresholdExceeded += new Accelerometer.ThresholdExceededEventHandler(accelerometer_ThresholdExceeded);
-
-            StartCheckingLightLevels();
         }
 
         private Configuration InitialiseConfiguration()
@@ -76,27 +78,9 @@ namespace HiveSenseTeam1
             return new Configuration();
         }
 
-        private void StartCheckingLightLevels()
-        {
-            GT.Timer timer = new GT.Timer(1000); // every second (1000ms)
-            timer.Tick += new GT.Timer.TickEventHandler(timer_Tick);
-            timer.Start();
-        }
-
-        void timer_Tick(GT.Timer timer)
-        {
-            if (lightSensor.ReadLightSensorPercentage() > 60)
-            {
-                multicolorLed.BlinkOnce(GT.Color.Green);
-            }
-        }
-
         void accelerometer_ThresholdExceeded(Accelerometer sender)
         {
             multicolorLed.BlinkOnce(GT.Color.Red);
         }
-
-
-        
     }
 }

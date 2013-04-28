@@ -71,7 +71,7 @@
     <Reference Include="GTM.GHIElectronics.Display_T35, Version=1.1.2.0, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
     </Reference>
-    <Reference Include="GTM.LoveElectronics.Button, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+    <Reference Include="GTM.IngenuityMicro.RfPipe, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
     </Reference>
     <Reference Include="Microsoft.SPOT.Graphics" />
