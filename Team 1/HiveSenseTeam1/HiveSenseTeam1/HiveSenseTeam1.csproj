@@ -48,6 +48,7 @@
     <Compile Include="Loggers\ILogger.cs" />
     <Compile Include="Loggers\RfLogger.cs" />
     <Compile Include="Loggers\LightAlarm.cs" />
+    <Compile Include="MeasureType.cs" />
     <Compile Include="Program.generated.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>

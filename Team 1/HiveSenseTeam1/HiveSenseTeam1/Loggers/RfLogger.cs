@@ -18,13 +18,13 @@ namespace HiveSenseTeam1.Loggers
         {
             var timestamp = measurement.TimeStamp.TimeOfDay.ToString();
             var data = measurement.Key + measurement.Value.ToString();
-            _rfPipe.SendData("Time" + timestamp);
+            _rfPipe.SendData(MeasureType.Time + timestamp);
             _rfPipe.SendData(data);
         }
 
         public void OnLogItem(Alert alert)
         {
-            throw new NotImplementedException();
+            _rfPipe.SendData("Alert" + alert.Message);
         }
     }
 }

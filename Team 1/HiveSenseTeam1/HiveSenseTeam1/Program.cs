@@ -49,6 +49,7 @@ namespace HiveSenseTeam1
             
             monitor_.AlarmReady += new HiveMonitor.AlarmReadyHandler(sdLogger_.OnLogItem);
             monitor_.AlarmReady += new HiveMonitor.AlarmReadyHandler(lightAlarm_.OnLogItem);
+            monitor_.AlarmReady += new HiveMonitor.AlarmReadyHandler(rfLogger_.OnLogItem);
         }
 
         private Configuration InitialiseConfiguration()
