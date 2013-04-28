@@ -3,6 +3,10 @@ Microsoft Visual Studio Solution File, Format Version 11.00
 # Visual C# Express 2010
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "HiveSenseTeam1", "HiveSenseTeam1\HiveSenseTeam1.csproj", "{43E2A24F-81B5-45A3-8E33-9C01340A1F6B}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Model.Test", "Team1.Tests\Model.Test.csproj", "{DCC9D294-41BF-4793-98CF-7585DF33DF30}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Model", "Model\Model.csproj", "{FE4900F2-C558-44E5-8DF8-87A70FA6FC62}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -15,6 +19,16 @@ Global
 		{43E2A24F-81B5-45A3-8E33-9C01340A1F6B}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{43E2A24F-81B5-45A3-8E33-9C01340A1F6B}.Release|Any CPU.Build.0 = Release|Any CPU
 		{43E2A24F-81B5-45A3-8E33-9C01340A1F6B}.Release|Any CPU.Deploy.0 = Release|Any CPU
+		{DCC9D294-41BF-4793-98CF-7585DF33DF30}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{DCC9D294-41BF-4793-98CF-7585DF33DF30}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{DCC9D294-41BF-4793-98CF-7585DF33DF30}.Debug|Any CPU.Deploy.0 = Debug|Any CPU
+		{DCC9D294-41BF-4793-98CF-7585DF33DF30}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{DCC9D294-41BF-4793-98CF-7585DF33DF30}.Release|Any CPU.Build.0 = Release|Any CPU
+		{DCC9D294-41BF-4793-98CF-7585DF33DF30}.Release|Any CPU.Deploy.0 = Release|Any CPU
+		{FE4900F2-C558-44E5-8DF8-87A70FA6FC62}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{FE4900F2-C558-44E5-8DF8-87A70FA6FC62}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{FE4900F2-C558-44E5-8DF8-87A70FA6FC62}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{FE4900F2-C558-44E5-8DF8-87A70FA6FC62}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

@@ -15,6 +15,7 @@ using Gadgeteer.Modules.Seeed;
 using Gadgeteer.Modules.GHIElectronics;
 using HiveSenseTeam1.Model;
 using GHIElectronics.Gadgeteer;
+using System.Text;
 
 namespace HiveSenseTeam1
 {
@@ -22,33 +23,24 @@ namespace HiveSenseTeam1
     {
         const string MEASUREMENT_FILE_NAME = "measurements.json";
         const string ALERTS_FILE_NAME = "alerts.json";
+        const string CONFIG_FILE_NAME = "HiveSense.ini";
 
         private DateTime gpsFixTimeUTC;
         private GT.Timer loggingTimer_;
 
+        private Configuration config;
+
         // This method is run when the mainboard is powered up or reset.   
         void ProgramStarted()
         {
-            /*******************************************************************************************
-            Modules added in the Program.gadgeteer designer view are used by typing 
-            their name followed by a period, e.g.  button.  or  camera.
-            
-            Many modules generate useful events. Type +=<tab><tab> to add a handler to an event, e.g.:
-                button.ButtonPressed +=<tab><tab>
-            
-            If you want to do something periodically, use a GT.Timer and handle its Tick event, e.g.:
-                GT.Timer timer = new GT.Timer(1000); // every second (1000ms)
-                timer.Tick +=<tab><tab>
-                timer.Start();
-            *******************************************************************************************/
-
-
-            // Use Debug.Print to show messages in Visual Studio's "Output" window during debugging.
             Debug.Print("Program Started");
+
+            InitialiseConfiguration();
+
             gps.PositionReceived += new GPS.PositionReceivedHandler(gps_PositionReceived);
 
             temperatureHumidity.MeasurementComplete += new TemperatureHumidity.MeasurementCompleteEventHandler(temperatureHumidity_MeasurementComplete);
-            
+
             accelerometer.EnableThresholdDetection(4, true, true, true, true, false, true);
             accelerometer.ThresholdExceeded += new Accelerometer.ThresholdExceededEventHandler(accelerometer_ThresholdExceeded);
 
@@ -57,6 +49,29 @@ namespace HiveSenseTeam1
             loggingTimer_ = new GT.Timer(60000);
             loggingTimer_.Stop();
             loggingTimer_.Tick += new GT.Timer.TickEventHandler(loggingTimer_Tick);
+        }
+
+        private void InitialiseConfiguration()
+        {
+            if (sdCard.IsCardInserted)
+            {
+                var storageDevice = sdCard.GetStorageDevice();
+                using (FileStream fs =
+                    storageDevice.Open(
+                        CONFIG_FILE_NAME,
+                        FileMode.OpenOrCreate,
+                        FileAccess.ReadWrite))
+                {
+                    var fileBytes = new byte[fs.Length];
+                    fs.Read(fileBytes, 0, (int)fs.Length);
+                    var fileChars = Encoding.UTF8.GetChars(fileBytes);
+                    var config = new Configuration(new string(fileChars));
+                }
+            }
+            else
+            {
+                config = new Configuration();
+            }
         }
 
         void loggingTimer_Tick(GT.Timer timer)
@@ -75,7 +90,7 @@ namespace HiveSenseTeam1
         {
             if (lightSensor.ReadLightSensorPercentage() > 60)
             {
-                multicolorLed.BlinkOnce(GT.Color.Green);   
+                multicolorLed.BlinkOnce(GT.Color.Green);
             }
         }
 
