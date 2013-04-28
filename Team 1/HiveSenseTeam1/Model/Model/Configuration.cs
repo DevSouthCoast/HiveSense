@@ -10,6 +10,7 @@ namespace HiveSenseTeam1.Model
     {
         public const string MotionSensorAlertsSetting = "MotionSensorAlerts";
         public const string TemperatureThresholdExceededAlertsSetting = "TemperatureThresholdExceededAlerts";
+        public const string LogIfNoGPSFix = "LogIfNoGPSFix";
 
         char[] newLine = new[] { '\r', '\n' };
 
