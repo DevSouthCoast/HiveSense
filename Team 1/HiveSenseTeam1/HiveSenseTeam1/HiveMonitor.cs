@@ -42,7 +42,7 @@ namespace HiveSenseTeam1
             loggingTimer_.Stop();
             loggingTimer_.Tick += new GT.Timer.TickEventHandler(loggingTimer_Tick);
 
-            if (config_[Configuration.LogIfNoGPSFix] == 1)
+            if (config_[Configuration.LogIfNoGPSFixSetting] == 1)
             {
                 Debug.Print("Starting logging timer...");
                 loggingTimer_.Start();
