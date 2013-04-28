@@ -1,0 +1,28 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 11.00
+# Visual Studio 2010
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "HiveSenseDisplay", "HiveSenseDisplay\HiveSenseDisplay.csproj", "{C8489892-7837-4DD8-BF6E-0C03F82EA46A}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RfPipe_42", "..\RfPipe-v1.0-source\RfPipe\RfPipe_42\RfPipe_42.csproj", "{48906B92-880B-4F85-9144-5FBEB9C7FE96}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{C8489892-7837-4DD8-BF6E-0C03F82EA46A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{C8489892-7837-4DD8-BF6E-0C03F82EA46A}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{C8489892-7837-4DD8-BF6E-0C03F82EA46A}.Debug|Any CPU.Deploy.0 = Debug|Any CPU
+		{C8489892-7837-4DD8-BF6E-0C03F82EA46A}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{C8489892-7837-4DD8-BF6E-0C03F82EA46A}.Release|Any CPU.Build.0 = Release|Any CPU
+		{C8489892-7837-4DD8-BF6E-0C03F82EA46A}.Release|Any CPU.Deploy.0 = Release|Any CPU
+		{48906B92-880B-4F85-9144-5FBEB9C7FE96}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{48906B92-880B-4F85-9144-5FBEB9C7FE96}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{48906B92-880B-4F85-9144-5FBEB9C7FE96}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{48906B92-880B-4F85-9144-5FBEB9C7FE96}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+EndGlobal
