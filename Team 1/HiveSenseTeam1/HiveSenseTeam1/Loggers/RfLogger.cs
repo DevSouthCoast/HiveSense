@@ -24,7 +24,7 @@ namespace HiveSenseTeam1.Loggers
 
         public void OnLogItem(Alert alert)
         {
-            _rfPipe.SendData("Alert" + alert.Message);
+            _rfPipe.SendData(MeasureType.Alert + alert.Message);
         }
     }
 }

@@ -6,5 +6,6 @@ namespace HiveSenseTeam1
         public static string Humidity = "HumidityPc";
         public static string Light = "LightSense";
         public static string Time = "Time";
+        public static string Alert = "Alert";
     }
 }
