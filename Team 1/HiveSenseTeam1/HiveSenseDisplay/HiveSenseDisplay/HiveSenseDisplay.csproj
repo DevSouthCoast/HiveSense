@@ -108,6 +108,12 @@
     <Service Include="{508349B6-6B84-4DF5-91F0-309BEEBAD82D}" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\RfPipe-v1.0-source\RfPipe\RfPipe_42\RfPipe_42.csproj">
+      <Project>{48906B92-880B-4F85-9144-5FBEB9C7FE96}</Project>
+      <Name>RfPipe_42</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
     <None Include="Resources\HappyBee.jpg" />
   </ItemGroup>
   <ItemGroup>
@@ -115,11 +121,5 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="Resources\UncdertainBee.jpg" />
-  </ItemGroup>
-  <ItemGroup>
-    <ProjectReference Include="..\RfPipe-v1.0-source\RfPipe\RfPipe_42\RfPipe_42.csproj">
-      <Project>{48906B92-880B-4F85-9144-5FBEB9C7FE96}</Project>
-      <Name>RfPipe_42</Name>
-    </ProjectReference>
   </ItemGroup>
 </Project>

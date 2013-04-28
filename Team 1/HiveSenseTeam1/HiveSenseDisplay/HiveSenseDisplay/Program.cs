@@ -153,7 +153,7 @@ namespace HiveSenseDisplay
             HiveTime.Font = Resources.GetFont(Resources.FontResources.Calibri24);
             Layout.Children.Add(HiveTime);
             //Set the text position
-            Canvas.SetLeft(HiveTime, 85);
+            Canvas.SetLeft(HiveTime, 115);
             Canvas.SetTop(HiveTime, 2);
 
             HiveAlert = new Text("Test");
@@ -161,10 +161,10 @@ namespace HiveSenseDisplay
             HiveAlert.Font = Resources.GetFont(Resources.FontResources.NinaB);
             Layout.Children.Add(HiveAlert);
             //Set the text position
-            Canvas.SetLeft(HiveAlert, 85);
-            Canvas.SetTop(HiveAlert, 30);
+            Canvas.SetLeft(HiveAlert, 115);
+            Canvas.SetTop(HiveAlert, 40);
 
-            HiveTemp = new Text("00");
+            HiveTemp = new Text("00.00");
             HiveTemp.ForeColor = Colors.White;
             HiveTemp.Font = Resources.GetFont(Resources.FontResources.Calibri24);
             Layout.Children.Add(HiveTemp);
@@ -172,7 +172,7 @@ namespace HiveSenseDisplay
             Canvas.SetLeft(HiveTemp, LeftMargin);
             Canvas.SetTop(HiveTemp, 2);
 
-            HiveHumidity = new Text("20");
+            HiveHumidity = new Text("20.00");
             HiveHumidity.ForeColor = Colors.White;
             HiveHumidity.Font = Resources.GetFont(Resources.FontResources.Calibri24);
             Layout.Children.Add(HiveHumidity);
