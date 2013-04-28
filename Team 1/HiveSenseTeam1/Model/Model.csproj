@@ -31,8 +31,8 @@
   <Import Project="$(NetMfTargetsBaseDir)$(TargetFrameworkVersion)\CSharp.Targets" />
   <ItemGroup>
     <Compile Include="Model\Alert.cs" />
-    <Compile Include="Model\Alerts.cs" />
     <Compile Include="Model\Configuration.cs" />
+    <Compile Include="Model\IModel.cs" />
     <Compile Include="Model\Measurement.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>

@@ -3,7 +3,7 @@ using Microsoft.SPOT;
 
 namespace HiveSenseTeam1.Model
 {
-    public class Measurement
+    public class Measurement : IModel
     {
         public DateTime TimeStamp { get; set; }
         public string Key { get; set; }

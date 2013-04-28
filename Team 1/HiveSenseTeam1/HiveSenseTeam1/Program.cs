@@ -41,6 +41,7 @@ namespace HiveSenseTeam1
 
             var sdLogger = new SdLogger(sdCard);
             monitor_.MeasurementReady += new HiveMonitor.MeasurementReadyHandler(sdLogger.OnLogItem);
+            monitor_.AlarmReady += new HiveMonitor.AlarmReadyHandler(sdLogger.OnLogItem);
             monitor_.TestEvents();
 
             //monitor_.MeasurementReady += liveMonitor.OnLogItem;
