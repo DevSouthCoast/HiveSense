@@ -27,8 +27,11 @@ namespace HiveSenseTeam1
             loggingTimer_ = new GT.Timer(5000);
             loggingTimer_.Stop();
             loggingTimer_.Tick += new GT.Timer.TickEventHandler(loggingTimer_Tick);
-            //TODO Use config
-            loggingTimer_.Start();
+
+            if (config_[Configuration.LogIfNoGPSFix] == 1)
+            {
+                loggingTimer_.Start();
+            }
 
             temperatureHumidity.MeasurementComplete += new TemperatureHumidity.MeasurementCompleteEventHandler(temperatureHumidity_MeasurementComplete);
 
