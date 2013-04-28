@@ -14,6 +14,7 @@ using GTM = Gadgeteer.Modules;
 using Gadgeteer.Modules.Seeed;
 using Gadgeteer.Modules.GHIElectronics;
 using HiveSenseTeam1.Model;
+using HiveSenseTeam1.Loggers;
 using GHIElectronics.Gadgeteer;
 using System.Text;
 
@@ -28,14 +29,23 @@ namespace HiveSenseTeam1
         private DateTime gpsFixTimeUTC;
         private GT.Timer loggingTimer_;
 
-        private Configuration config;
+        private HiveMonitor monitor_;
+        //private Configuration config;
 
         // This method is run when the mainboard is powered up or reset.   
         void ProgramStarted()
         {
-            Debug.Print("Program Started");
+            Configuration config = InitialiseConfiguration();
 
-            InitialiseConfiguration();
+            monitor_ = new HiveMonitor(config);
+
+            var sdLogger = new SdLogger();
+            monitor_.MeasurementReady += new HiveMonitor.MeasurementReadyHandler(sdLogger.OnLogItem);
+            
+            //monitor_.MeasurementReady += liveMonitor.OnLogItem;
+            //monitor_.MeasurementReady += webLogger.OnLogItem;
+
+            //monitor_.AlarmReady += 
 
             gps.PositionReceived += new GPS.PositionReceivedHandler(gps_PositionReceived);
 
@@ -51,7 +61,7 @@ namespace HiveSenseTeam1
             loggingTimer_.Tick += new GT.Timer.TickEventHandler(loggingTimer_Tick);
         }
 
-        private void InitialiseConfiguration()
+        private Configuration InitialiseConfiguration()
         {
             if (sdCard.IsCardInserted)
             {
@@ -65,13 +75,11 @@ namespace HiveSenseTeam1
                     var fileBytes = new byte[fs.Length];
                     fs.Read(fileBytes, 0, (int)fs.Length);
                     var fileChars = Encoding.UTF8.GetChars(fileBytes);
-                    var config = new Configuration(new string(fileChars));
+                    return new Configuration(new string(fileChars));
                 }
             }
-            else
-            {
-                config = new Configuration();
-            }
+
+            return new Configuration();
         }
 
         void loggingTimer_Tick(GT.Timer timer)
@@ -103,7 +111,6 @@ namespace HiveSenseTeam1
         {
             loggingTimer_.Start();
             gpsFixTimeUTC = gps.LastPosition.FixTimeUtc;
-            temperatureHumidity.RequestMeasurement();
         }
 
         void temperatureHumidity_MeasurementComplete(TemperatureHumidity sender, double temperature, double relativeHumidity)

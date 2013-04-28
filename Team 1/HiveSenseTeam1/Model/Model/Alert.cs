@@ -7,19 +7,19 @@ namespace HiveSenseTeam1.Model
     {
         public DateTime TimeStamp { get; set; }
         public string Key { get; set; }
-        public string Message {get; set; }
+        public string Message { get; set; }
         public double Threshold { get; set; }
         public double RecordedValue { get; set; }
 
         public string ToJSon()
         {
             return "{"
-                + "\"TimeStamp\": " + TimeStamp.ToLocalTime().ToString("yyyy-MM-dd hh:mm:ss") + ", "
-                + "\"Key\": \"" + Key + "\", "
-                + "\"Message\": \"" + Message + "\", "
-                + "\"Threshold\": " + Threshold.ToString()
-                + "\"RecordedValue\": " + RecordedValue.ToString()
-                + "}\n";
+            + "\"TimeStamp\": " + TimeStamp.ToLocalTime().ToString("yyyy-MM-dd hh:mm:ss") + ", "
+            + "\"Key\": \"" + Key + "\", "
+            + "\"Message\": \"" + Message + "\", "
+            + "\"Threshold\": " + Threshold.ToString()
+            + "\"RecordedValue\": " + RecordedValue.ToString()
+            + "}\n";
         }
     }
 }
