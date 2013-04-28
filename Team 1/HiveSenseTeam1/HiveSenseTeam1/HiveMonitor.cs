@@ -10,8 +10,11 @@ namespace HiveSenseTeam1
     class HiveMonitor
     {
         private Configuration config_;
+
         public delegate void AlarmReadyHandler(Alert measurement);
+
         public delegate void MeasurementReadyHandler(Measurement measurement);
+
         public event MeasurementReadyHandler MeasurementReady;
         public event AlarmReadyHandler AlarmReady;
         private GT.Timer loggingTimer_;
@@ -23,6 +26,8 @@ namespace HiveSenseTeam1
         private TimeSpan alarmRaisedSpan_;
         private bool alarmRaised_ = false;
 
+        protected double CurrentHiveTemperature { get; set; }
+
         public HiveMonitor(
             Configuration config,
             TemperatureHumidity temperatureHumidity,
@@ -31,6 +36,10 @@ namespace HiveSenseTeam1
             Accelerometer accelerometer)
         {
             config_ = config;
+            CurrentHiveTemperature = 0;
+            LightThreshold = (double)config_[Configuration.LightLevelThresholdSetting];
+            TemperatureThreshold = (double)config_[Configuration.TemperatureThresholdSetting];
+            
             temperatureHumidity_ = temperatureHumidity;
             gps_ = gps;
             lightSensor_ = lightSensor;
@@ -56,7 +65,7 @@ namespace HiveSenseTeam1
 
             gps.PositionReceived += new GPS.PositionReceivedHandler(gps_PositionReceived);
 
-            StartCheckingLightLevels();
+            StartCheckingHiveForAlerts();
         }
 
         void loggingTimer_Tick(GT.Timer timer)
@@ -79,6 +88,8 @@ namespace HiveSenseTeam1
             var measurementTemp = new Measurement { TimeStamp = gpsFixTimeUTC, Key = MeasureType.Tempdegc, Value = temperature };
             var measurementHumidity = new Measurement { TimeStamp = gpsFixTimeUTC, Key = MeasureType.Humidity, Value = relativeHumidity };
 
+            CurrentHiveTemperature = temperature;
+
             if (MeasurementReady != null)
             {
                 MeasurementReady(measurementTemp);
@@ -93,18 +104,21 @@ namespace HiveSenseTeam1
             gpsFixTimeUTC = gps_.LastPosition.FixTimeUtc;
         }
 
-        private void StartCheckingLightLevels()
+        private void StartCheckingHiveForAlerts()
         {
             GT.Timer timer = new GT.Timer(1000); // every second (1000ms)
-            timer.Tick += new GT.Timer.TickEventHandler(TimerCheckLightLevelsTick);
+            timer.Tick += new GT.Timer.TickEventHandler(CheckStatusOfHive);
             timer.Start();
         }
 
-        void TimerCheckLightLevelsTick(GT.Timer timer)
+        protected double TemperatureThreshold { get; set; }
+        protected double LightThreshold { get; set; }
+
+        void CheckStatusOfHive(GT.Timer timer)
         {
             double lightLevel = lightSensor_.ReadLightSensorPercentage();
-            // TODO: Replace this with config.
-            if (lightLevel > 60)
+            
+            if (lightLevel > LightThreshold)
             {
                 alarmRaised_ = true;
                 alarmRaisedSpan_ = GT.Timer.GetMachineTime();
@@ -117,7 +131,23 @@ namespace HiveSenseTeam1
                             Key = MeasureType.Light,
                             Message = "Too much light in the hive!",
                             RecordedValue = lightLevel,
-                            Threshold = 4.0,
+                            Threshold = LightThreshold,
+                            TimeStamp = gpsFixTimeUTC
+                        });
+                }
+            }
+
+            if (CurrentHiveTemperature > TemperatureThreshold)
+            {
+                if (AlarmReady != null)
+                {
+                    AlarmReady(
+                        new Alert
+                        {
+                            Key = MeasureType.Tempdegc,
+                            Message = "The hive's at " + CurrentHiveTemperature + " degrees C!",
+                            RecordedValue = CurrentHiveTemperature,
+                            Threshold = TemperatureThreshold,
                             TimeStamp = gpsFixTimeUTC
                         });
                 }
@@ -131,7 +161,7 @@ namespace HiveSenseTeam1
             if (AlarmReady != null)
             {
                 AlarmReady(
-                    new HiveSenseTeam1.Model.Alert
+                    new Alert
                     {
                         Key = "Accelerometer",
                         Message = "She fell over!",
