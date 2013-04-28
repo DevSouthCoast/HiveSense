@@ -17,6 +17,7 @@ using HiveSenseTeam1.Model;
 using HiveSenseTeam1.Loggers;
 using GHIElectronics.Gadgeteer;
 using System.Text;
+using Gadgeteer.Modules.IngenuityMicro;
 
 namespace HiveSenseTeam1
 {
@@ -27,6 +28,7 @@ namespace HiveSenseTeam1
         private HiveMonitor monitor_;
         private SdLogger sdLogger_;
         private DisplayLogger dispLogger_;
+        private RfLogger rfLogger_;
 
         // This method is run when the mainboard is powered up or reset.   
         void ProgramStarted()
@@ -37,11 +39,14 @@ namespace HiveSenseTeam1
 
             sdLogger_ = new SdLogger(sdCard);
             dispLogger_ = new DisplayLogger(char_Display);
+            rfLogger_ = new RfLogger(rfPipe);
 
             monitor_.MeasurementReady += new HiveMonitor.MeasurementReadyHandler(sdLogger_.OnLogItem);
+            monitor_.MeasurementReady += new HiveMonitor.MeasurementReadyHandler(dispLogger_.OnLogItem);
+            monitor_.MeasurementReady += new HiveMonitor.MeasurementReadyHandler(rfLogger_.OnLogItem);
+            
             monitor_.AlarmReady += new HiveMonitor.AlarmReadyHandler(sdLogger_.OnLogItem);
 
-            monitor_.MeasurementReady += new HiveMonitor.MeasurementReadyHandler(dispLogger_.OnLogItem);
 
             //monitor_.TestEvents();
             accelerometer.EnableThresholdDetection(4, true, true, true, true, false, true);

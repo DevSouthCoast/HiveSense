@@ -174,5 +174,20 @@
         </socketUses>
       </module>
     </gadgeteerModelHasGadgeteerHardware>
+    <gadgeteerModelHasGadgeteerHardware Id="8a0145ad-ccba-4001-9d55-4f02d9ab4a70">
+      <module Id="45f41544-26c5-4452-8c48-1192c96f7e0d" cachedDefinition="&lt;?xml version=&quot;1.0&quot; encoding=&quot;utf-16&quot;?&gt;&#xD;&#xA;&lt;ModuleDefinition xmlns:xsi=&quot;http://www.w3.org/2001/XMLSchema-instance&quot; xmlns:xsd=&quot;http://www.w3.org/2001/XMLSchema&quot; Name=&quot;RfPipe&quot; Type=&quot;Gadgeteer.Modules.IngenuityMicro.RfPipe&quot; HardwareVersion=&quot;1.0&quot; Image=&quot;C:\Program Files (x86)\IngenuityMicro\Microsoft .NET Gadgeteer\Modules\RfPipe\Resources\Image.jpg&quot; BoardWidth=&quot;32&quot; BoardHeight=&quot;27&quot; MinimumGadgeteerCoreVersion=&quot;2.42.500&quot; HelpUrl=&quot;&quot; UniqueId=&quot;9b6db7d6-dd0a-4f75-aaff-851eb4a7da74&quot; Manufacturer=&quot;IngenuityMicro&quot; Description=&quot;A RfPipe module&quot; InstanceName=&quot;rfPipe&quot; ModuleSuppliesPower=&quot;false&quot;&gt;&#xD;&#xA;  &lt;ProvidedSockets /&gt;&#xD;&#xA;  &lt;Assemblies&gt;&#xD;&#xA;    &lt;Assembly MFVersion=&quot;4.1&quot; Name=&quot;GTM.IngenuityMicro.RfPipe&quot; /&gt;&#xD;&#xA;    &lt;Assembly MFVersion=&quot;4.2&quot; Name=&quot;GTM.IngenuityMicro.RfPipe&quot; /&gt;&#xD;&#xA;    &lt;Assembly MFVersion=&quot;4.3&quot; Name=&quot;GTM.IngenuityMicro.RfPipe&quot; /&gt;&#xD;&#xA;    &lt;Assembly MFVersion=&quot;4.2&quot; Name=&quot;Gadgeteer.Serial&quot; /&gt;&#xD;&#xA;    &lt;Assembly MFVersion=&quot;4.3&quot; Name=&quot;Gadgeteer.Serial&quot; /&gt;&#xD;&#xA;  &lt;/Assemblies&gt;&#xD;&#xA;  &lt;LibrariesProvided /&gt;&#xD;&#xA;  &lt;Sockets&gt;&#xD;&#xA;    &lt;Socket Orientation=&quot;90&quot; Left=&quot;16&quot; Top=&quot;23&quot; TypesLabel=&quot;U&quot; ConstructorOrder=&quot;1&quot; Optional=&quot;false&quot;&gt;&#xD;&#xA;      &lt;Types&gt;&#xD;&#xA;        &lt;Type&gt;U&lt;/Type&gt;&#xD;&#xA;      &lt;/Types&gt;&#xD;&#xA;      &lt;Pins&gt;&#xD;&#xA;        &lt;Pin Shared=&quot;false&quot;&gt;4&lt;/Pin&gt;&#xD;&#xA;        &lt;Pin Shared=&quot;false&quot;&gt;5&lt;/Pin&gt;&#xD;&#xA;      &lt;/Pins&gt;&#xD;&#xA;    &lt;/Socket&gt;&#xD;&#xA;  &lt;/Sockets&gt;&#xD;&#xA;  &lt;ExtraLibrariesRequired /&gt;&#xD;&#xA;&lt;/ModuleDefinition&gt;" name="rfPipe" moduleType="Gadgeteer.Modules.IngenuityMicro.RfPipe" moduleDefinitionId="9b6db7d6-dd0a-4f75-aaff-851eb4a7da74">
+        <socketUses>
+          <moduleHasSocketUses Id="79a70c20-1a78-4dfb-96e4-4a01cf523761">
+            <socketUse Id="4e81e013-a38e-4f62-8ef1-525344b19cf3" label="U">
+              <socket>
+                <socketUseReferencesSocket Id="eba1f0a2-4bba-475c-83c1-e991e2c710d0">
+                  <socketMoniker Id="fb738a0a-bac9-4fae-97a6-ec65a1155185" />
+                </socketUseReferencesSocket>
+              </socket>
+            </socketUse>
+          </moduleHasSocketUses>
+        </socketUses>
+      </module>
+    </gadgeteerModelHasGadgeteerHardware>
   </gadgeteerHardware>
 </gadgeteerModel>

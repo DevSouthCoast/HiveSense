@@ -24,6 +24,7 @@ namespace HiveSenseTeam1
         Gadgeteer.Modules.GHIElectronics.MulticolorLed multicolorLed;
         Gadgeteer.Modules.Seeed.Accelerometer accelerometer;
         Gadgeteer.Modules.GHIElectronics.LightSensor lightSensor;
+        Gadgeteer.Modules.IngenuityMicro.RfPipe rfPipe;
 
         public static void Main()
         {
@@ -44,6 +45,8 @@ namespace HiveSenseTeam1
             accelerometer = new GTM.Seeed.Accelerometer(3);
 		
             sdCard = new GTM.GHIElectronics.SDCard(5);
+		
+            rfPipe = new GTM.IngenuityMicro.RfPipe(8);
 		
             lightSensor = new GTM.GHIElectronics.LightSensor(9);
 		

@@ -45,6 +45,7 @@
     <Compile Include="HiveMonitor.cs" />
     <Compile Include="Loggers\DisplayLogger.cs" />
     <Compile Include="Loggers\ILogger.cs" />
+    <Compile Include="Loggers\RfLogger.cs" />
     <Compile Include="Program.generated.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
@@ -85,6 +86,9 @@
       <SpecificVersion>False</SpecificVersion>
     </Reference>
     <Reference Include="GTM.GHIElectronics.UsbClientDP, Version=1.1.1.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+    </Reference>
+    <Reference Include="GTM.IngenuityMicro.RfPipe, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
     </Reference>
     <Reference Include="GTM.Seeed.Accelerometer, Version=1.6.0.0, Culture=neutral, processorArchitecture=MSIL">
