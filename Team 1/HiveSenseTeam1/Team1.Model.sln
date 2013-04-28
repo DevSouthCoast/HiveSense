@@ -1,9 +1,9 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 11.00
 # Visual C# Express 2010
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Model", "..\Model\Model.csproj", "{FE4900F2-C558-44E5-8DF8-87A70FA6FC62}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Model", "Model\Model.csproj", "{FE4900F2-C558-44E5-8DF8-87A70FA6FC62}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Model.Test", "..\Team1.Tests\Model.Test.csproj", "{DCC9D294-41BF-4793-98CF-7585DF33DF30}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Model.Test", "Team1.Tests\Model.Test.csproj", "{DCC9D294-41BF-4793-98CF-7585DF33DF30}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
