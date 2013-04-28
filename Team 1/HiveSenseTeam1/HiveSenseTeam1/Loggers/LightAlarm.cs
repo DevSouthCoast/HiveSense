@@ -1,14 +1,14 @@
 using System;
-using Microsoft.SPOT;
+using Gadgeteer.Modules.GHIElectronics;
 using GT = Gadgeteer;
 
 namespace HiveSenseTeam1.Loggers
 {
     class LightAlarm : ILogger
     {
-        Gadgeteer.Modules.GHIElectronics.MulticolorLed multicolorLed_;
+        MulticolorLed multicolorLed_;
 
-        public LightAlarm(Gadgeteer.Modules.GHIElectronics.MulticolorLed multicolorLed)
+        public LightAlarm(MulticolorLed multicolorLed)
         {
             multicolorLed_ = multicolorLed;
         }
