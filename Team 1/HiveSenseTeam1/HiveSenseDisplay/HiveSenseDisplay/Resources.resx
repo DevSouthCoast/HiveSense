@@ -133,7 +133,7 @@
   <data name="small" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>Resources\small.tinyfnt;System.Byte[], mscorlib, Culture=neutral, PublicKeyToken=null</value>
   </data>
-  <data name="UncdertainBee" type="System.Resources.ResXFileRef, System.Windows.Forms">
+  <data name="UncertainBee" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>Resources\UncdertainBee.jpg;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
 </root>

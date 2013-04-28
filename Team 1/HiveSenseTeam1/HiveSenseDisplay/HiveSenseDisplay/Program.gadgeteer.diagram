@@ -114,6 +114,7 @@
         <socketShapeMoniker Id="9a17486e-ee89-4db7-a0c7-371f18f3ecc3" />
       </nodes>
     </socketConnector>
+<<<<<<< HEAD
     <moduleShape Id="d12d585f-118c-4411-b355-9e4d0472b9fb" absoluteBounds="1.26, 1.72, 0.86614173228346458, 0.86614173228346458">
       <moduleMoniker Id="b3a1c506-bb94-4afd-b5fb-6bd5658f43b8" />
       <relativeChildShapes />
@@ -130,5 +131,7 @@
         <socketShapeMoniker Id="6e5ce154-2104-4702-814d-1c55b8da2aa3" />
       </nodes>
     </socketConnector>
+=======
+>>>>>>> Display formatted messages
   </nestedChildShapes>
 </gadgeteerDSLDiagram>

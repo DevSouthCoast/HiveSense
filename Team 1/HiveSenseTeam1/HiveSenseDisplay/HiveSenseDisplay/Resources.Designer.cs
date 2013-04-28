@@ -37,8 +37,8 @@ namespace HiveSenseDisplay
         internal enum BitmapResources : short
         {
             HappyBee = -32732,
-            UncdertainBee = -24473,
             SadBee = 11699,
+            UncertainBee = 24690,
         }
         [System.SerializableAttribute()]
         internal enum FontResources : short

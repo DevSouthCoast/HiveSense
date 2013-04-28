@@ -1,4 +1,5 @@
 ﻿using System;
+using math = System.Math;
 using System.Collections;
 using System.Threading;
 using Microsoft.SPOT;
@@ -18,21 +19,18 @@ namespace HiveSenseDisplay
 {
     public partial class Program
     {
-        public Gadgeteer.Modules.IngenuityMicro.RfPipe RfPipe;
-        public static Window mainWindow;
-        public int LeftMargin = 5;
-        public Text HiveTime;
+        private Gadgeteer.Modules.IngenuityMicro.RfPipe RfPipe;
+        private static Window mainWindow;
+        private int LeftMargin = 5;
+        private Text HiveTime;
+        private Text HiveTemp;
+        private Text HiveHumidity;
+        private Text HiveAlert;
+        private GT.Timer timer;
+        private string SensorMessage = string.Empty;
+        private Border Facepic;
 
-        public Text HiveTemp;
-        public Text HiveHumidity;
-        public Text HiveAlert;
-        public GT.Timer timer;
-        public string SensorMessage = string.Empty;
-        
-        public Border Facepic;
-
-
-        Bitmap BG;
+        private Bitmap BG;
 
         // This method is run when the mainboard is powered up or reset.   
         void ProgramStarted()
@@ -58,9 +56,6 @@ namespace HiveSenseDisplay
             SetupUI();
 
             RfPipe.DataReceived += new GTM.IngenuityMicro.RfPipe.RfPipeReceivedHandler(RfPipe_DataReceived);
-            //HappyButton.ButtonPressed += new GTM.LoveElectronics.Button.ButtonEventHandler(HappyButton_ButtonPressed);
-            //Mehbutton.ButtonPressed += new GTM.LoveElectronics.Button.ButtonEventHandler(Mehbutton_ButtonPressed);
-            SadButton.ButtonPressed += new GTM.GHIElectronics.Button.ButtonEventHandler(SadButton_ButtonPressed);
         }
 
         void RfPipe_DataReceived(string val)
@@ -70,42 +65,67 @@ namespace HiveSenseDisplay
             {
                 timer.Start();
             }
-
         }
-
-        void SadButton_ButtonPressed(GTM.GHIElectronics.Button sender, GTM.GHIElectronics.Button.ButtonState state)
-        {
-           
-            var BeeFace = Resources.GetBitmap(Resources.BitmapResources.SadBee);
-            Facepic.Background = new ImageBrush(BeeFace);
-            Facepic.Invalidate();
-        }
-
-        //void Mehbutton_ButtonPressed(GTM.LoveElectronics.Button sender, GTM.LoveElectronics.Button.ButtonState state)
-        //{
-        //    var BeeFace = Resources.GetBitmap(Resources.BitmapResources.UncdertainBee);
-        //    Facepic.Background = new ImageBrush(BeeFace);
-        //    Facepic.Invalidate();
-        //}
-
-        //void HappyButton_ButtonPressed(GTM.LoveElectronics.Button sender, GTM.LoveElectronics.Button.ButtonState state)
-        //{
-        //    var BeeFace = Resources.GetBitmap(Resources.BitmapResources.HappyBee);
-        //    Facepic.Background = new ImageBrush(BeeFace);
-        //    Facepic.Invalidate();
-        //}
 
         void timer_Tick(GT.Timer timer)
         {
-            HiveTemp.TextContent = SensorMessage;
-            HiveTime.Invalidate();
-         }
+            if (TryParseAndDisplayMessage("TempDegC", HiveTemp, true))
+            {
+                return;
+            }
+            if (TryParseAndDisplayMessage("HumidityPc", HiveHumidity, true))
+            {
+                return;
+            }
+            if (TryParseAndDisplayMessage("Time", HiveTime))
+            {
+                return;
+            }
 
+            if (TryParseAndDisplayMessage("Alert", HiveAlert))
+            {
+                var BeeFace = Resources.GetBitmap(Resources.BitmapResources.SadBee);
+                Facepic.Background = new ImageBrush(BeeFace);
+                Facepic.Invalidate();
+            }
+        }
+
+        private bool TryParseAndDisplayMessage(string identifier, Text textArea, bool numericValue = false)
+        {
+            string payload;
+            if (TryExtractPayloadFromSensorMessage(identifier, out payload))
+            {
+                var displayPayload = payload;
+
+                double numeric;
+                if (numericValue)
+                {
+                    double.TryParse(payload, out numeric);
+                    displayPayload = (math.Round(numeric * 100) / 100).ToString().Substring(0, 5);
+                }
+
+                textArea.TextContent = displayPayload;
+                textArea.Invalidate();
+                return true;
+            }
+            return false;
+        }
+
+        private bool TryExtractPayloadFromSensorMessage(string identifier, out string payload)
+        {
+            if (SensorMessage.Substring(0, identifier.Length) == identifier)
+            {
+                payload = SensorMessage.TrimStart(identifier.ToCharArray());
+                return true;
+            }
+            payload = string.Empty;
+            return false;
+        }
         void SetupUI()
         {
-            BG = Resources.GetBitmap(Resources.BitmapResources.UncdertainBee);
+            BG = Resources.GetBitmap(Resources.BitmapResources.UncertainBee);
 
-            var BeeFace = Resources.GetBitmap(Resources.BitmapResources.UncdertainBee);
+            var BeeFace = Resources.GetBitmap(Resources.BitmapResources.UncertainBee);
 
             // setup the display window
             mainWindow = display_T35.WPFWindow;
@@ -129,14 +149,20 @@ namespace HiveSenseDisplay
             Layout.Children.Add(Facepic);
 
             HiveTime = new Text("Time: 00:00:00");
-            HiveTime.ForeColor = Colors.Yellow;
+            HiveTime.ForeColor = Colors.White;
             HiveTime.Font = Resources.GetFont(Resources.FontResources.Calibri24);
             Layout.Children.Add(HiveTime);
             //Set the text position
             Canvas.SetLeft(HiveTime, 85);
             Canvas.SetTop(HiveTime, 2);
 
-
+            HiveAlert = new Text("Test");
+            HiveAlert.ForeColor = Colors.White;
+            HiveAlert.Font = Resources.GetFont(Resources.FontResources.NinaB);
+            Layout.Children.Add(HiveAlert);
+            //Set the text position
+            Canvas.SetLeft(HiveAlert, 85);
+            Canvas.SetTop(HiveAlert, 30);
 
             HiveTemp = new Text("00");
             HiveTemp.ForeColor = Colors.White;
