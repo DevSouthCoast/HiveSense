@@ -20,6 +20,8 @@ namespace HiveSenseTeam1
         private DateTime gpsFixTimeUTC;
         private LightSensor lightSensor_;
         private Accelerometer accelerometer_;
+        private TimeSpan alarmRaisedSpan_;
+        private bool alarmRaised_ = false;
 
         public HiveMonitor(
             Configuration config,
@@ -34,7 +36,9 @@ namespace HiveSenseTeam1
             lightSensor_ = lightSensor;
             accelerometer_ = accelerometer;
 
-            loggingTimer_ = new GT.Timer(5000);
+            alarmRaisedSpan_ = GT.Timer.GetMachineTime();
+
+            loggingTimer_ = new GT.Timer(10000);
             loggingTimer_.Stop();
             loggingTimer_.Tick += new GT.Timer.TickEventHandler(loggingTimer_Tick);
 
@@ -57,18 +61,26 @@ namespace HiveSenseTeam1
 
         void loggingTimer_Tick(GT.Timer timer)
         {
+            TimeSpan diff = GT.Timer.GetMachineTime() - alarmRaisedSpan_;
+            if (diff.Ticks > 100000000 && alarmRaised_)
+            {
+                alarmRaised_ = false;
+                if (AlarmReady != null)
+                {
+                    AlarmReady(new Alert { Key = MeasureType.Cleared, Message = "", RecordedValue = 0.0, Threshold = 0.0, TimeStamp = gpsFixTimeUTC });
+                }
+            }
+
             temperatureHumidity_.RequestMeasurement();
         }
 
         void temperatureHumidity_MeasurementComplete(TemperatureHumidity sender, double temperature, double relativeHumidity)
         {
-            
-
             var measurementTemp = new Measurement { TimeStamp = gpsFixTimeUTC, Key = MeasureType.Tempdegc, Value = temperature };
             var measurementHumidity = new Measurement { TimeStamp = gpsFixTimeUTC, Key = MeasureType.Humidity, Value = relativeHumidity };
 
             if (MeasurementReady != null)
-                {
+            {
                 MeasurementReady(measurementTemp);
                 MeasurementReady(measurementHumidity);
             }
@@ -94,6 +106,9 @@ namespace HiveSenseTeam1
             // TODO: Replace this with config.
             if (lightLevel > 60)
             {
+                alarmRaised_ = true;
+                alarmRaisedSpan_ = GT.Timer.GetMachineTime();
+
                 if (AlarmReady != null)
                 {
                     AlarmReady(
@@ -111,6 +126,8 @@ namespace HiveSenseTeam1
 
         void accelerometer_ThresholdExceeded(Accelerometer sender)
         {
+            alarmRaised_ = true;
+            alarmRaisedSpan_ = GT.Timer.GetMachineTime();
             if (AlarmReady != null)
             {
                 AlarmReady(
