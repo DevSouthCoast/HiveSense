@@ -59,7 +59,7 @@ namespace HiveSenseTeam1.Model
                     var kvp = (DictionaryEntry)obj;
                     if ((string)kvp.Key == key)
                     {
-                        return (int)kvp.Value;
+                        return Int32.Parse(kvp.Value.ToString());
                     }
                 }
                 //Default to "on"

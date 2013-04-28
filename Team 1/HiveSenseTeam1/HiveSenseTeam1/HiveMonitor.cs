@@ -30,6 +30,7 @@ namespace HiveSenseTeam1
 
             if (config_[Configuration.LogIfNoGPSFix] == 1)
             {
+                Debug.Print("Starting logging timer...");
                 loggingTimer_.Start();
             }
 
@@ -57,6 +58,7 @@ namespace HiveSenseTeam1
 
         void gps_PositionReceived(GPS sender, GPS.Position position)
         {
+            Debug.Print("Starting logging timer...");
             loggingTimer_.Start();
             gpsFixTimeUTC = gps.LastPosition.FixTimeUtc;
         }
