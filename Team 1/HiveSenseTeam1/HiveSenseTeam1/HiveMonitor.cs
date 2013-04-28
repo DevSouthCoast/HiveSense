@@ -139,6 +139,9 @@ namespace HiveSenseTeam1
 
             if (CurrentHiveTemperature > TemperatureThreshold)
             {
+                alarmRaised_ = true;
+                alarmRaisedSpan_ = GT.Timer.GetMachineTime();
+
                 if (AlarmReady != null)
                 {
                     AlarmReady(
@@ -158,6 +161,7 @@ namespace HiveSenseTeam1
         {
             alarmRaised_ = true;
             alarmRaisedSpan_ = GT.Timer.GetMachineTime();
+
             if (AlarmReady != null)
             {
                 AlarmReady(
