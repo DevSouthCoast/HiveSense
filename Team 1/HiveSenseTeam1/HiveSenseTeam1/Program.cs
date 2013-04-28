@@ -36,7 +36,7 @@ namespace HiveSenseTeam1
         {
             Configuration config = InitialiseConfiguration();
 
-            monitor_ = new HiveMonitor(config, temperatureHumidity, gps, lightSensor);
+            monitor_ = new HiveMonitor(config, temperatureHumidity, gps, lightSensor, accelerometer);
 
             sdLogger_ = new SdLogger(sdCard);
             dispLogger_ = new DisplayLogger(char_Display);
@@ -48,13 +48,7 @@ namespace HiveSenseTeam1
             monitor_.MeasurementReady += new HiveMonitor.MeasurementReadyHandler(rfLogger_.OnLogItem);
             
             monitor_.AlarmReady += new HiveMonitor.AlarmReadyHandler(sdLogger_.OnLogItem);
-
-
             monitor_.AlarmReady += new HiveMonitor.AlarmReadyHandler(lightAlarm_.OnLogItem);
-
-            //monitor_.TestEvents();
-            accelerometer.EnableThresholdDetection(4, true, true, true, true, false, true);
-            accelerometer.ThresholdExceeded += new Accelerometer.ThresholdExceededEventHandler(accelerometer_ThresholdExceeded);
         }
 
         private Configuration InitialiseConfiguration()
@@ -76,11 +70,6 @@ namespace HiveSenseTeam1
             }
 
             return new Configuration();
-        }
-
-        void accelerometer_ThresholdExceeded(Accelerometer sender)
-        {
-            multicolorLed.BlinkOnce(GT.Color.Red);
         }
     }
 }

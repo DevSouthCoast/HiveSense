@@ -19,17 +19,20 @@ namespace HiveSenseTeam1
         private GPS gps_;
         private DateTime gpsFixTimeUTC;
         private LightSensor lightSensor_;
+        private Accelerometer accelerometer_;
 
         public HiveMonitor(
             Configuration config,
             TemperatureHumidity temperatureHumidity,
             GPS gps,
-            LightSensor lightSensor)
+            LightSensor lightSensor,
+            Accelerometer accelerometer)
         {
             config_ = config;
             temperatureHumidity_ = temperatureHumidity;
             gps_ = gps;
             lightSensor_ = lightSensor;
+            accelerometer_ = accelerometer;
 
             loggingTimer_ = new GT.Timer(5000);
             loggingTimer_.Stop();
@@ -42,6 +45,10 @@ namespace HiveSenseTeam1
             }
 
             temperatureHumidity.MeasurementComplete += new TemperatureHumidity.MeasurementCompleteEventHandler(temperatureHumidity_MeasurementComplete);
+
+            // TODO: Replace this with config.
+            accelerometer_.EnableThresholdDetection(4, true, true, true, true, false, true);
+            accelerometer_.ThresholdExceeded += new Accelerometer.ThresholdExceededEventHandler(accelerometer_ThresholdExceeded);
 
             gps.PositionReceived += new GPS.PositionReceivedHandler(gps_PositionReceived);
 
@@ -93,12 +100,27 @@ namespace HiveSenseTeam1
                             Key = "LightSense",
                             Message = "Too much light in the hive!",
                             RecordedValue = lightLevel,
-                            Threshold = 60.0,
+                            Threshold = 4.0,
                             TimeStamp = gpsFixTimeUTC
                         });
                 }
             }
         }
 
+        void accelerometer_ThresholdExceeded(Accelerometer sender)
+        {
+            if (AlarmReady != null)
+            {
+                AlarmReady(
+                    new HiveSenseTeam1.Model.Alert
+                    {
+                        Key = "Accelerometer",
+                        Message = "The bees are shaken and stirred!",
+                        RecordedValue = 0.0,
+                        Threshold = 4.0,
+                        TimeStamp = gpsFixTimeUTC
+                    });
+            }
+        }
     }
 }
