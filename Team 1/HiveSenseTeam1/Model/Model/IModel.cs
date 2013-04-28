@@ -1,4 +1,7 @@
-﻿public interface IModel
+﻿namespace HiveSenseTeam1.Model
 {
-    string ToJSon();
+    public interface IModel
+    {
+        string ToJSon();
+    }
 }
