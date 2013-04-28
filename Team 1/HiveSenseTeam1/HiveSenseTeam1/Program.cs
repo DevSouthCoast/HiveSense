@@ -22,45 +22,27 @@ namespace HiveSenseTeam1
 {
     public partial class Program
     {
-        const string MEASUREMENT_FILE_NAME = "measurements.json";
-        const string ALERTS_FILE_NAME = "alerts.json";
         const string CONFIG_FILE_NAME = "HiveSense.ini";
 
-        private DateTime gpsFixTimeUTC;
-        private GT.Timer loggingTimer_;
-
         private HiveMonitor monitor_;
-        //private Configuration config;
-
+        private SdLogger sdLogger_;
         // This method is run when the mainboard is powered up or reset.   
         void ProgramStarted()
         {
             Configuration config = InitialiseConfiguration();
 
-            monitor_ = new HiveMonitor(config);
+            monitor_ = new HiveMonitor(config, temperatureHumidity, gps);
 
-            var sdLogger = new SdLogger(sdCard);
-            monitor_.MeasurementReady += new HiveMonitor.MeasurementReadyHandler(sdLogger.OnLogItem);
-            monitor_.AlarmReady += new HiveMonitor.AlarmReadyHandler(sdLogger.OnLogItem);
-            monitor_.TestEvents();
-
-            //monitor_.MeasurementReady += liveMonitor.OnLogItem;
-            //monitor_.MeasurementReady += webLogger.OnLogItem;
-
-            //monitor_.AlarmReady += 
-
-            gps.PositionReceived += new GPS.PositionReceivedHandler(gps_PositionReceived);
-
-            temperatureHumidity.MeasurementComplete += new TemperatureHumidity.MeasurementCompleteEventHandler(temperatureHumidity_MeasurementComplete);
-
+            sdLogger_ = new SdLogger(sdCard);
+            monitor_.MeasurementReady += new HiveMonitor.MeasurementReadyHandler(sdLogger_.OnLogItem);
+            monitor_.AlarmReady += new HiveMonitor.AlarmReadyHandler(sdLogger_.OnLogItem);
+            
+            //monitor_.TestEvents();
             accelerometer.EnableThresholdDetection(4, true, true, true, true, false, true);
             accelerometer.ThresholdExceeded += new Accelerometer.ThresholdExceededEventHandler(accelerometer_ThresholdExceeded);
 
             StartCheckingLightLevels();
 
-            loggingTimer_ = new GT.Timer(60000);
-            loggingTimer_.Stop();
-            loggingTimer_.Tick += new GT.Timer.TickEventHandler(loggingTimer_Tick);
         }
 
         private Configuration InitialiseConfiguration()
@@ -84,11 +66,6 @@ namespace HiveSenseTeam1
             return new Configuration();
         }
 
-        void loggingTimer_Tick(GT.Timer timer)
-        {
-            temperatureHumidity.RequestMeasurement();
-        }
-
         private void StartCheckingLightLevels()
         {
             GT.Timer timer = new GT.Timer(1000); // every second (1000ms)
@@ -109,16 +86,7 @@ namespace HiveSenseTeam1
             multicolorLed.BlinkOnce(GT.Color.Red);
         }
 
-        void gps_PositionReceived(GPS sender, GPS.Position position)
-        {
-            loggingTimer_.Start();
-            gpsFixTimeUTC = gps.LastPosition.FixTimeUtc;
-        }
 
-        void temperatureHumidity_MeasurementComplete(TemperatureHumidity sender, double temperature, double relativeHumidity)
-        {
-            var measurementTemp = new Measurement { TimeStamp = gpsFixTimeUTC, Key = "TempDegC", Value = temperature };
-            var measurementHumidity = new Measurement { TimeStamp = gpsFixTimeUTC, Key = "HumidityPc", Value = relativeHumidity };
-        }
+        
     }
 }
