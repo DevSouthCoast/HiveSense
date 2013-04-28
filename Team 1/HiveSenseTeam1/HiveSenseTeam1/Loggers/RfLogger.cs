@@ -16,7 +16,9 @@ namespace HiveSenseTeam1.Loggers
 
         public void OnLogItem(Measurement measurement)
         {
+            var timestamp = measurement.TimeStamp.TimeOfDay.ToString();
             var data = measurement.Key + measurement.Value.ToString();
+            _rfPipe.SendData("Time" + timestamp);
             _rfPipe.SendData(data);
         }
 
