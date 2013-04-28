@@ -117,7 +117,7 @@ namespace HiveSenseTeam1
                     new HiveSenseTeam1.Model.Alert
                     {
                         Key = "Accelerometer",
-                        Message = "The bees are shaken and stirred!",
+                        Message = "She fell over!",
                         RecordedValue = 0.0,
                         Threshold = 4.0,
                         TimeStamp = gpsFixTimeUTC
