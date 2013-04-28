@@ -12,7 +12,11 @@ namespace MFConsoleApplication1
             InitialiseConfigWithSingleEntryExpectArrayListWithSingleKVP();
             InitialiseConfigWith2EntriesExpectArrayListWith2KVPs();
             GetValueWithMissingKeyValuesExpectDefaultValue();
-            Debug.Print("All done");
+            Debug.Print("");
+            Debug.Print("******************************************");
+            Debug.Print("All done, no errors");
+            Debug.Print("******************************************");
+            Debug.Print("");
         }
 
         private static void GetValueWithExistingKeyExpectValues()
