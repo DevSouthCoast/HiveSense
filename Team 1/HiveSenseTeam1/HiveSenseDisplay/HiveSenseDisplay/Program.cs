@@ -60,6 +60,7 @@ namespace HiveSenseDisplay
 
         void RfPipe_DataReceived(string val)
         {
+            //TODO:MJ Needs to push messages to a queue and pop each one in turn
             SensorMessage = val;
             if (!timer.IsRunning)
             {
@@ -113,6 +114,12 @@ namespace HiveSenseDisplay
 
         private bool TryExtractPayloadFromSensorMessage(string identifier, out string payload)
         {
+            if (SensorMessage.Length < identifier.Length)
+            {
+                payload = string.Empty;
+                return false;
+            }
+
             if (SensorMessage.Substring(0, identifier.Length) == identifier)
             {
                 payload = SensorMessage.TrimStart(identifier.ToCharArray());
@@ -170,7 +177,7 @@ namespace HiveSenseDisplay
             Layout.Children.Add(HiveTemp);
             //Set the text position
             Canvas.SetLeft(HiveTemp, LeftMargin);
-            Canvas.SetTop(HiveTemp, 2);
+            Canvas.SetTop(HiveTemp, 35);
 
             HiveHumidity = new Text("20.00");
             HiveHumidity.ForeColor = Colors.White;
@@ -178,7 +185,7 @@ namespace HiveSenseDisplay
             Layout.Children.Add(HiveHumidity);
             //Set the text position
             Canvas.SetLeft(HiveHumidity, LeftMargin);
-            Canvas.SetTop(HiveHumidity, 85);
+            Canvas.SetTop(HiveHumidity, 125);
 
             // draw to screen
             mainWindow.Child = Layout;
