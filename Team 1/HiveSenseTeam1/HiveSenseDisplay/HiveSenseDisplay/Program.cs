@@ -27,8 +27,8 @@ namespace HiveSenseDisplay
         private Text HiveHumidity;
         private Text HiveAlert;
         private GT.Timer timer;
-        private string SensorMessage = string.Empty;
         private Border Facepic;
+        private Queue messageQueue = new Queue();
 
         private Bitmap BG;
 
@@ -60,8 +60,8 @@ namespace HiveSenseDisplay
 
         void RfPipe_DataReceived(string val)
         {
-            //TODO:MJ Needs to push messages to a queue and pop each one in turn
-            SensorMessage = val;
+            messageQueue.Enqueue(val);
+
             if (!timer.IsRunning)
             {
                 timer.Start();
@@ -70,31 +70,35 @@ namespace HiveSenseDisplay
 
         void timer_Tick(GT.Timer timer)
         {
-            if (TryParseAndDisplayMessage("TempDegC", HiveTemp, true))
+            while (messageQueue.Count > 0)
             {
-                return;
-            }
-            if (TryParseAndDisplayMessage("HumidityPc", HiveHumidity, true))
-            {
-                return;
-            }
-            if (TryParseAndDisplayMessage("Time", HiveTime))
-            {
-                return;
-            }
+                var message = (string)messageQueue.Dequeue();
+                if (TryParseAndDisplayMessage(message, "TempDegC", HiveTemp, true))
+                {
+                    return;
+                }
+                if (TryParseAndDisplayMessage(message, "HumidityPc", HiveHumidity, true))
+                {
+                    return;
+                }
+                if (TryParseAndDisplayMessage(message, "Time", HiveTime))
+                {
+                    return;
+                }
 
-            if (TryParseAndDisplayMessage("Alert", HiveAlert))
-            {
-                var BeeFace = Resources.GetBitmap(Resources.BitmapResources.SadBee);
-                Facepic.Background = new ImageBrush(BeeFace);
-                Facepic.Invalidate();
+                if (TryParseAndDisplayMessage(message, "Alert", HiveAlert))
+                {
+                    var BeeFace = Resources.GetBitmap(Resources.BitmapResources.SadBee);
+                    Facepic.Background = new ImageBrush(BeeFace);
+                    Facepic.Invalidate();
+                }
             }
         }
 
-        private bool TryParseAndDisplayMessage(string identifier, Text textArea, bool numericValue = false)
+        private bool TryParseAndDisplayMessage(string message, string identifier, Text textArea, bool numericValue = false)
         {
             string payload;
-            if (TryExtractPayloadFromSensorMessage(identifier, out payload))
+            if (TryExtractPayloadFromSensorMessage(message, identifier, out payload))
             {
                 var displayPayload = payload;
 
@@ -112,22 +116,23 @@ namespace HiveSenseDisplay
             return false;
         }
 
-        private bool TryExtractPayloadFromSensorMessage(string identifier, out string payload)
+        private bool TryExtractPayloadFromSensorMessage(string message, string identifier, out string payload)
         {
-            if (SensorMessage.Length < identifier.Length)
+            if (message.Length < identifier.Length)
             {
                 payload = string.Empty;
                 return false;
             }
 
-            if (SensorMessage.Substring(0, identifier.Length) == identifier)
+            if (message.Substring(0, identifier.Length) == identifier)
             {
-                payload = SensorMessage.TrimStart(identifier.ToCharArray());
+                payload = message.TrimStart(identifier.ToCharArray());
                 return true;
             }
             payload = string.Empty;
             return false;
         }
+
         void SetupUI()
         {
             BG = Resources.GetBitmap(Resources.BitmapResources.UncertainBee);
